@@ -3,6 +3,11 @@ package com.dakshpokar.essentialmode;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,45 +20,35 @@ import java.util.List;
 
 import static android.content.Intent.CATEGORY_LAUNCHER;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    HomeFragment homeFragment;
+    NotificationsFragment notificationsFragment;
+    SettingsFragment settingsFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Thread thread = new Thread(){
-            @Override
-            public void run(){
-                try
-                {
-                    while(!isInterrupted()){
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                TextView textViewTime = (TextView)findViewById(R.id.time);
-                                TextView textViewDate = (TextView)findViewById(R.id.date);
-                                SimpleDateFormat timeData = new SimpleDateFormat("h:mm a");
-                                SimpleDateFormat dateData = new SimpleDateFormat("MMM dd, yyyy");
-                                long date = System.currentTimeMillis();
-                                String timeString = timeData.format(date);
-                                String dateString = dateData.format(date);
-                                textViewDate.setText(dateString);
-                                textViewTime.setText(timeString);
-                            }
-                        });
-                    }
-                }
-                catch (InterruptedException e){
-
-                }
-            }
-        };
-        thread.start();
-        setContentView(R.layout.activity_main);
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.fragment_container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+    }
+    public void OnFragmentInteractionListener(){
+
+    }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -104,5 +99,35 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onBackPressed(){
 
+    }
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            if(position == 0){
+                return new HomeFragment();
+            }
+            else if(position == 1){
+                return new NotificationsFragment();
+            }
+            else if(position == 2){
+                return new SettingsFragment();
+            }
+            else{
+                return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
     }
 }

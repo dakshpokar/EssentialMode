@@ -8,75 +8,12 @@
     android:background="@color/pureBlack"
 
     tools:context=".MainActivity">
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    >
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/time"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="50dp"
-       />
-    <TextView
-            android:id="@+id/date"
-            android:layout_below="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20th July 2018"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:textSize="10dp"
-            />
-/>
-    <LinearLayout
-        android:id="@+id/apps"
-        android:layout_below="@+id/date"
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:layout_marginTop="40dp"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/app1"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:background="@null"
-            android:onClick="selector"
-            android:src="@drawable/ic_add_black_24dp"
-            /><ImageButton
-        android:id="@+id/app2"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_add_black_24dp"
-        android:background="@null"
-
-
-        /><ImageButton
-        android:id="@+id/app3"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:background="@null"
-
-        android:src="@drawable/ic_add_black_24dp"
-
-        /><ImageButton
-        android:id="@+id/app4"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_add_black_24dp"
-        android:background="@null"
-
-        />
-</LinearLayout>
-</RelativeLayout>
-
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </RelativeLayout>
