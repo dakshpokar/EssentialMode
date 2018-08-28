@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+
+import static com.dakshpokar.essentialmode.MainActivity.pageIndicatorView;
 
 
 /**
@@ -35,7 +38,8 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     public View view;
     public HomeFragment() {
-        // Required empty public constructor
+        pageIndicatorView.setVisibility(View.INVISIBLE);
+
     }
 
     /**
@@ -53,6 +57,7 @@ public class HomeFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -105,6 +110,18 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        TextView textViewTime = (TextView)view.findViewById(R.id.time);
+        TextView textViewDate = (TextView)view.findViewById(R.id.date);
+        SimpleDateFormat timeData = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat dateData = new SimpleDateFormat("MMM dd, yyyy");
+        Resources res = getResources();
+        String text = String.format(res.getString(R.string.time), timeData);
+        long date = System.currentTimeMillis();
+        String timeString = timeData.format(date);
+        String dateString = dateData.format(date);
+        textViewDate.setText(dateString);
+        textViewTime.setText(timeString);
         return view;
     }
 
@@ -146,4 +163,5 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

@@ -1,12 +1,19 @@
 package com.dakshpokar.essentialmode;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 /**
@@ -22,10 +29,11 @@ public class NotificationsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    TextView txtView;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    View view;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,7 +72,8 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -73,7 +82,6 @@ public class NotificationsFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -105,4 +113,5 @@ public class NotificationsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

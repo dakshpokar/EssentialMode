@@ -1,6 +1,13 @@
 package com.dakshpokar.essentialmode;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -8,13 +15,21 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rd.PageIndicatorView;
+
+import junit.framework.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -24,10 +39,13 @@ import static android.content.Intent.CATEGORY_LAUNCHER;
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    HomeFragment homeFragment;
-    NotificationsFragment notificationsFragment;
-    SettingsFragment settingsFragment;
+    static HomeFragment homeFragment;
+    static NotificationsFragment notificationsFragment;
+    static SettingsFragment settingsFragment;
+    static PageIndicatorView pageIndicatorView;
+    DevicePolicyManager deviceManger;
 
+    TextView txtView;
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -47,15 +65,63 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
+        pageIndicatorView = (PageIndicatorView)findViewById(R.id.pageIndicatorView);
         mViewPager = (ViewPager) findViewById(R.id.fragment_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
         homeFragment = new HomeFragment();
         settingsFragment = new SettingsFragment();
+        //txtView = (TextView)findViewById(R.id.txtView);
         notificationsFragment = new NotificationsFragment();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0){
+                    pageIndicatorView.setVisibility(View.INVISIBLE);
+                }
+                else if(position == 1)
+                {
+                    pageIndicatorView.setVisibility(View.VISIBLE);
+                }
+                else if(position == 2){
+                    pageIndicatorView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    pageIndicatorView.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
     public void OnFragmentInteractionListener(){
 
+    }
+    public void buttonClicked(View view){
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+        Notification n  = new Notification.Builder(this)
+                .setContentTitle("New mail from " + "test@gmail.com")
+                .setContentText("Subject")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setAutoCancel(true).build();
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
     }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -125,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 return notificationsFragment;
             }
             else if(position == 2){
+                pageIndicatorView.setVisibility(View.INVISIBLE);
                 return settingsFragment;
             }
             else{
@@ -136,6 +203,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         public int getCount() {
             // Show 3 total pages.
             return 3;
+        }
+
+    }
+    class NotificationReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String temp = intent.getStringExtra("notification_event") + "\n" + txtView.getText();
+            txtView.setText(temp);
         }
     }
 }
