@@ -1,6 +1,7 @@
 package com.dakshpokar.essentialmode;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setRetainInstance(true);
         Thread thread = new Thread(){
             @Override
             public void run(){
@@ -72,15 +74,19 @@ public class HomeFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
                                 TextView textViewTime = (TextView)view.findViewById(R.id.time);
                                 TextView textViewDate = (TextView)view.findViewById(R.id.date);
                                 SimpleDateFormat timeData = new SimpleDateFormat("h:mm a");
                                 SimpleDateFormat dateData = new SimpleDateFormat("MMM dd, yyyy");
+                                Resources res = getResources();
+                                String text = String.format(res.getString(R.string.time), timeData);
                                 long date = System.currentTimeMillis();
                                 String timeString = timeData.format(date);
                                 String dateString = dateData.format(date);
                                 textViewDate.setText(dateString);
                                 textViewTime.setText(timeString);
+
                             }
                         });
                     }

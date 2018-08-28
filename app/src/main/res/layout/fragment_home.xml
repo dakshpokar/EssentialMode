@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"
+            android:text="@string/time"
             android:textSize="50dp" />
 
         <TextView

@@ -3,6 +3,7 @@ package com.dakshpokar.essentialmode;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        SimpleDateFormat timeData = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat dateData = new SimpleDateFormat("MMM dd, yyyy");
+        Resources res = getResources();
+        String text = String.format(res.getString(R.string.time), timeData);
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
 
@@ -44,7 +49,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.fragment_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setOffscreenPageLimit(3);
+        homeFragment = new HomeFragment();
+        settingsFragment = new SettingsFragment();
+        notificationsFragment = new NotificationsFragment();
     }
     public void OnFragmentInteractionListener(){
 
@@ -111,13 +119,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position == 0){
-                return new HomeFragment();
+                return homeFragment;
             }
             else if(position == 1){
-                return new NotificationsFragment();
+                return notificationsFragment;
             }
             else if(position == 2){
-                return new SettingsFragment();
+                return settingsFragment;
             }
             else{
                 return null;
