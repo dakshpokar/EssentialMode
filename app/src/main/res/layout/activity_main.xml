@@ -24,7 +24,7 @@
         android:layout_alignParentBottom="true"
         android:visibility="invisible"
         android:layout_centerHorizontal="true"
-        app:piv_animationType="scale"
+        app:piv_animationType="worm"
         app:piv_dynamicCount="true"
         app:piv_interactiveAnimation="true"
         app:piv_selectedColor="@color/white"

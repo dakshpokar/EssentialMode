@@ -40,18 +40,20 @@
 
         <LinearLayout
             android:id="@+id/apps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="330dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/date"
             android:layout_marginTop="40dp"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            >
 
             <ImageButton
                 android:id="@+id/app1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:scaleType="centerInside"
                 android:background="@null"
                 android:onClick="selector"
                 android:src="@drawable/ic_add_black_24dp" />
@@ -61,10 +63,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:scaleType="centerInside"
                 android:background="@null"
+                android:onClick="selector"
                 android:src="@drawable/ic_add_black_24dp"
-
-
                 />
 
             <ImageButton
@@ -72,10 +74,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:scaleType="centerInside"
                 android:background="@null"
-
+                android:onClick="selector"
                 android:src="@drawable/ic_add_black_24dp"
-
                 />
 
             <ImageButton
@@ -83,9 +85,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:scaleType="centerInside"
                 android:background="@null"
+                android:onClick="selector"
                 android:src="@drawable/ic_add_black_24dp"
-
                 />
         </LinearLayout>
     </RelativeLayout>

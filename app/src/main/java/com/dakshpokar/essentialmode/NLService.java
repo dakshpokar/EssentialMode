@@ -46,7 +46,6 @@ public class NLService extends NotificationListenerService {
         Intent i = new  Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
         i.putExtra("notification_event","onNotificationRemoved :" + sbn.getPackageName() + "\n");
         //MainActivity.notificationsFragment.txtView.setText(MainActivity.notificationsFragment.txtView.getText() + "\n"+ sbn.getPackageName());
-
         sendBroadcast(i);
     }
 

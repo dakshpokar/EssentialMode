@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,13 +38,14 @@ import java.util.List;
 
 import static android.content.Intent.CATEGORY_LAUNCHER;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AppChooserListener, HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     static HomeFragment homeFragment;
     static NotificationsFragment notificationsFragment;
     static SettingsFragment settingsFragment;
     static PageIndicatorView pageIndicatorView;
+    private Integer invoker;
     DevicePolicyManager deviceManger;
 
     TextView txtView;
@@ -158,19 +161,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
     public void selector(View view){
+        invoker = view.getId();
+        AppChooserDialog.show(view.getContext(), this);
 
 
-        Intent intent = new Intent();
-        Intent myIntent = new Intent("android.intent.action.MAIN",null);
-        myIntent.setAction(Intent.ACTION_VIEW);
-        myIntent.addCategory("android.intent.category.LAUNCHER");
-        intent.putExtra("android.intent.extra.INTENT",myIntent);
-        startActivityForResult(intent, 1);
-
-        PackageManager manager = getPackageManager();
-        List<ResolveInfo> info = manager.queryIntentActivities(
-                intent, PackageManager.MATCH_DEFAULT_ONLY);
     }
+
+    @Override
+    public void onAppChooserSelected(AppItem value) {
+        homeFragment.setApp(invoker, value);
+    }
+
+    @Override
+    public void onAppChooserCancel() {
+
+    }
+
     public void onBackPressed(){
 
     }
