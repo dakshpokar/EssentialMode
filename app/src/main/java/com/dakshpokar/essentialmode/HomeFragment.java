@@ -2,21 +2,29 @@ package com.dakshpokar.essentialmode;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import junit.framework.Test;
 
 import java.text.SimpleDateFormat;
 
@@ -36,7 +44,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    DatabaseHelper mDatabaseHelper;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -112,19 +120,105 @@ public class HomeFragment extends Fragment {
         thread.start();
         super.onCreate(savedInstanceState);
     }
+    public void populateAppList(){
+        Cursor data = mDatabaseHelper.getData();
+        ApplicationInfo applicationInfo;
+        PackageManager packageManager = getContext().getPackageManager();
+        while(data.moveToNext()){
+            try {
+                applicationInfo = packageManager.getApplicationInfo(data.getString(1), 0);
+                AppItem appItem = new AppItem(getContext(), applicationInfo);
+                ImageButton app = null;
+                switch(data.getInt(0)){
+                    case 1:
+                        app = app1;
+                        break;
+                    case 2:
+                        app = app2;
+                        break;
+                    case 3:
+                        app = app3;
+                        break;
+                    case 4:
+                        app = app4;
+                        break;
+                }
+                final String pkg_name = appItem.getPackageName();
+                app.setImageDrawable(appItem.getIcon(getContext()));
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                app.setColorFilter(filter);
+                app.setOnClickListener(new View.OnClickListener() {
+                    Integer count = 0;
+                    @Override
+                    public void onClick(View v) {
+                            Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(pkg_name);
+                            if (launchIntent != null) {
+                                startActivity(launchIntent);//null pointer check in case package name was not found
+                            }
+                        }
+                });
+                app.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Toast.makeText(getActivity(), "doubletap", Toast.LENGTH_SHORT).show();
+                        Integer id = 0;
+                        ImageButton app = null;
+                        switch(v.getId()){
+                            case R.id.app1:
+                                id = 1;
+                                app = app1;
+                                break;
+                            case R.id.app2:
+                                id = 2;
+                                app = app2;
+                                break;
+                            case R.id.app3:
+                                id = 3;
+                                app = app3;
+                                break;
+                            case R.id.app4:
+                                id = 4;
+                                app = app4;
+                                break;
+                        }
+                        app.setColorFilter(null);
+                        app.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                        app.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selector(v);
+                            }
+                        });
+                        mDatabaseHelper.remove(id);
 
+                        return true;
+                    }
+                });
+            }
+            catch (PackageManager.NameNotFoundException e){
+
+            }
+        }
+    }
+    Integer invoker;
+    public void selector(View view){
+        invoker = view.getId();
+        AppChooserDialog.show(view.getContext(), (MainActivity)getActivity());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        mDatabaseHelper = new DatabaseHelper(getActivity());
         //Setting icons on home screen
         app1 = (ImageButton)view.findViewById(R.id.app1);
-
         app2 = (ImageButton)view.findViewById(R.id.app2);
         app3 = (ImageButton)view.findViewById(R.id.app3);
         app4 = (ImageButton)view.findViewById(R.id.app4);
+        populateAppList();
 
         try {
 
@@ -192,20 +286,26 @@ public class HomeFragment extends Fragment {
     public void setApp(Integer id, AppItem item){
         ImageButton app = null;
         final String pkg_name = item.getPackageName();
+        Integer mainID = 0;
         switch(id){
             case R.id.app1:
                 app = app1;
+                mainID = 1;
                 break;
             case R.id.app2:
                 app = app2;
+                mainID = 2;
                 break;
             case R.id.app3:
                 app = app3;
+                mainID = 3;
                 break;
             case R.id.app4:
                 app = app4;
+                mainID = 4;
                 break;
         }
+        mDatabaseHelper.addData(mainID, pkg_name);
         app.setImageDrawable(item.getIcon(getContext()));
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);

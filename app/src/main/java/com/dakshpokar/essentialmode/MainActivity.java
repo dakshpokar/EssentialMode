@@ -163,10 +163,7 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
     public void selector(View view){
         invoker = view.getId();
         AppChooserDialog.show(view.getContext(), this);
-
-
     }
-
     @Override
     public void onAppChooserSelected(AppItem value) {
         homeFragment.setApp(invoker, value);
