@@ -12,14 +12,18 @@
         android:layout_margin="20dp"
         >
         <TextView
+            android:id="@+id/notification_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notifications"
             android:textSize="30dp"
             android:textColor="@color/white"/>
         <ListView
+            android:id="@+id/notification_list"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/notification_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="match_parent"></ListView>
     </RelativeLayout>
 
 </FrameLayout>

@@ -124,12 +124,12 @@ public class HomeFragment extends Fragment {
         Cursor data = mDatabaseHelper.getData();
         ApplicationInfo applicationInfo;
         PackageManager packageManager = getContext().getPackageManager();
-        while(data.moveToNext()){
+        while(data.moveToNext()) {
             try {
                 applicationInfo = packageManager.getApplicationInfo(data.getString(1), 0);
                 AppItem appItem = new AppItem(getContext(), applicationInfo);
                 ImageButton app = null;
-                switch(data.getInt(0)){
+                switch (data.getInt(0)) {
                     case 1:
                         app = app1;
                         break;
@@ -144,60 +144,61 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 final String pkg_name = appItem.getPackageName();
-                app.setImageDrawable(appItem.getIcon(getContext()));
-                ColorMatrix matrix = new ColorMatrix();
-                matrix.setSaturation(0);
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                app.setColorFilter(filter);
-                app.setOnClickListener(new View.OnClickListener() {
-                    Integer count = 0;
-                    @Override
-                    public void onClick(View v) {
+                    app.setImageDrawable(appItem.getIcon(getContext()));
+                    ColorMatrix matrix = new ColorMatrix();
+                    matrix.setSaturation(0);
+                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                    app.setColorFilter(filter);
+                    app.setOnClickListener(new View.OnClickListener() {
+                        Integer count = 0;
+
+                        @Override
+                        public void onClick(View v) {
                             Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(pkg_name);
                             if (launchIntent != null) {
                                 startActivity(launchIntent);//null pointer check in case package name was not found
                             }
                         }
-                });
-                app.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Toast.makeText(getActivity(), "doubletap", Toast.LENGTH_SHORT).show();
-                        Integer id = 0;
-                        ImageButton app = null;
-                        switch(v.getId()){
-                            case R.id.app1:
-                                id = 1;
-                                app = app1;
-                                break;
-                            case R.id.app2:
-                                id = 2;
-                                app = app2;
-                                break;
-                            case R.id.app3:
-                                id = 3;
-                                app = app3;
-                                break;
-                            case R.id.app4:
-                                id = 4;
-                                app = app4;
-                                break;
-                        }
-                        app.setColorFilter(null);
-                        app.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
-                        app.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                selector(v);
+                    });
+                    app.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Toast.makeText(getActivity(), "doubletap", Toast.LENGTH_SHORT).show();
+                            Integer id = 0;
+                            ImageButton app = null;
+                            switch (v.getId()) {
+                                case R.id.app1:
+                                    id = 1;
+                                    app = app1;
+                                    break;
+                                case R.id.app2:
+                                    id = 2;
+                                    app = app2;
+                                    break;
+                                case R.id.app3:
+                                    id = 3;
+                                    app = app3;
+                                    break;
+                                case R.id.app4:
+                                    id = 4;
+                                    app = app4;
+                                    break;
                             }
-                        });
-                        mDatabaseHelper.remove(id);
+                            app.setColorFilter(null);
+                            app.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                            app.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    selector(v);
+                                }
+                            });
+                            mDatabaseHelper.remove(id);
 
-                        return true;
-                    }
-                });
-            }
-            catch (PackageManager.NameNotFoundException e){
+                            return true;
+                        }
+                    });
+
+            } catch (PackageManager.NameNotFoundException e) {
 
             }
         }
@@ -219,16 +220,6 @@ public class HomeFragment extends Fragment {
         app3 = (ImageButton)view.findViewById(R.id.app3);
         app4 = (ImageButton)view.findViewById(R.id.app4);
         populateAppList();
-
-        try {
-
-            Drawable icon = getActivity().getPackageManager().getApplicationIcon("com.example.testnotification");
-            app1.setImageDrawable(icon);
-
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         TextView textViewTime = (TextView)view.findViewById(R.id.time);
         TextView textViewDate = (TextView)view.findViewById(R.id.date);

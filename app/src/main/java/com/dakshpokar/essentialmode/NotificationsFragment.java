@@ -7,11 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -33,6 +37,7 @@ public class NotificationsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
     View view;
 
     private OnFragmentInteractionListener mListener;
@@ -73,6 +78,7 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
+
         return view;
     }
 
@@ -81,6 +87,9 @@ public class NotificationsFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+    public void addItem(StatusBarNotification sbn){
+
     }
     @Override
     public void onAttach(Context context) {
