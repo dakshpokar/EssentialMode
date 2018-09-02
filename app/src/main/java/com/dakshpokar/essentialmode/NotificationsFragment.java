@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,8 +40,10 @@ public class NotificationsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private ListView listView;
     View view;
+    ArrayList<StatusBarNotification> arrayList;
+    ArrayAdapter<StatusBarNotification> adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,7 +83,11 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
-
+        listView = (ListView)view.findViewById(R.id.notification_list);
+        arrayList = new ArrayList<>();
+        ImageView notification_icon = (ImageView)view.findViewById(R.id.notification_icon);
+        TextView notification_app_name = (TextView) view.findViewById(R.id.notification_app_name);
+        TextView notification_description = (TextView) view.findViewById(R.id.upper_text);
         return view;
     }
 
@@ -122,5 +131,27 @@ public class NotificationsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    class ListAdapter extends BaseAdapter{
+        @Override
+        public int getCount() {
+            return 0;
+        }
 
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            view = getLayoutInflater().inflate(R.layout.notification_list_item, null);
+
+            return null;
+        }
+    }
 }

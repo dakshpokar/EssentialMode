@@ -189,6 +189,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
         mDatabaseHelper = new DatabaseHelper(getActivity());
         //Setting icons on home screen
         app1 = (ImageButton)view.findViewById(R.id.app1);
