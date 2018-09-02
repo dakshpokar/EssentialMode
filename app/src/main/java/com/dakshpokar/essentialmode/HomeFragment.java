@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     public View view;
     private ImageButton app1, app2, app3, app4;
-
+    View.OnLongClickListener longClickListener;
     public HomeFragment() {
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
@@ -129,18 +130,23 @@ public class HomeFragment extends Fragment {
                 applicationInfo = packageManager.getApplicationInfo(data.getString(1), 0);
                 AppItem appItem = new AppItem(getContext(), applicationInfo);
                 ImageButton app = null;
+                Log.i("DB", String.valueOf(data.getInt(0)));
                 switch (data.getInt(0)) {
                     case 1:
                         app = app1;
+                        Log.i("DB", "app1");
                         break;
                     case 2:
                         app = app2;
+                        Log.i("DB", "app2");
                         break;
                     case 3:
                         app = app3;
+                        Log.i("DB", "app3");
                         break;
                     case 4:
                         app = app4;
+                        Log.i("DB", "app4");
                         break;
                 }
                 final String pkg_name = appItem.getPackageName();
@@ -160,50 +166,13 @@ public class HomeFragment extends Fragment {
                             }
                         }
                     });
-                    app.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            Toast.makeText(getActivity(), "doubletap", Toast.LENGTH_SHORT).show();
-                            Integer id = 0;
-                            ImageButton app = null;
-                            switch (v.getId()) {
-                                case R.id.app1:
-                                    id = 1;
-                                    app = app1;
-                                    break;
-                                case R.id.app2:
-                                    id = 2;
-                                    app = app2;
-                                    break;
-                                case R.id.app3:
-                                    id = 3;
-                                    app = app3;
-                                    break;
-                                case R.id.app4:
-                                    id = 4;
-                                    app = app4;
-                                    break;
-                            }
-                            app.setColorFilter(null);
-                            app.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
-                            app.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    selector(v);
-                                }
-                            });
-                            mDatabaseHelper.remove(id);
-
-                            return true;
-                        }
-                    });
-
+                    app.setOnLongClickListener(longClickListener);
             } catch (PackageManager.NameNotFoundException e) {
 
             }
         }
     }
-    Integer invoker;
+    Integer invoker = 0;
     public void selector(View view){
         invoker = view.getId();
         AppChooserDialog.show(view.getContext(), (MainActivity)getActivity());
@@ -219,6 +188,50 @@ public class HomeFragment extends Fragment {
         app2 = (ImageButton)view.findViewById(R.id.app2);
         app3 = (ImageButton)view.findViewById(R.id.app3);
         app4 = (ImageButton)view.findViewById(R.id.app4);
+        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+        longClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Integer id = 0;
+                ImageButton app = null;
+                switch (v.getId()) {
+                    case R.id.app1:
+                        id = 1;
+                        app = app1;
+                        break;
+                    case R.id.app2:
+                        id = 2;
+                        app = app2;
+                        break;
+                    case R.id.app3:
+                        id = 3;
+                        app = app3;
+                        break;
+                    case R.id.app4:
+                        id = 4;
+                        app = app4;
+                        break;
+                }
+                app.setColorFilter(null);
+                app.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                app.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selector(v);
+                    }
+                });
+                mDatabaseHelper.remove(id);
+                vibrator.vibrate(100);
+                Toast.makeText(getActivity(), "Removed App "+id, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        };
+
+        app1.setOnLongClickListener(longClickListener);
+        app2.setOnLongClickListener(longClickListener);
+        app3.setOnLongClickListener(longClickListener);
+        app4.setOnLongClickListener(longClickListener);
         populateAppList();
 
         TextView textViewTime = (TextView)view.findViewById(R.id.time);
@@ -278,7 +291,14 @@ public class HomeFragment extends Fragment {
         ImageButton app = null;
         final String pkg_name = item.getPackageName();
         Integer mainID = 0;
-        switch(id){
+        Integer ID = 0;
+        if(invoker != 0){
+            ID = invoker;
+        }
+        else {
+            ID = id;
+        }
+        switch(ID){
             case R.id.app1:
                 app = app1;
                 mainID = 1;
@@ -296,7 +316,10 @@ public class HomeFragment extends Fragment {
                 mainID = 4;
                 break;
         }
-        mDatabaseHelper.addData(mainID, pkg_name);
+        Log.i("ID: ", String.valueOf(ID));
+        if(mainID<5) {
+            mDatabaseHelper.addData(mainID, pkg_name);
+        }
         app.setImageDrawable(item.getIcon(getContext()));
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
@@ -311,6 +334,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        invoker = 0;
     }
 
 }

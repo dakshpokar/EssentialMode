@@ -160,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
+    public void clicko(View view){
+        homeFragment.mDatabaseHelper.removeAll();
+    }
     public void selector(View view){
         invoker = view.getId();
         AppChooserDialog.show(view.getContext(), this);

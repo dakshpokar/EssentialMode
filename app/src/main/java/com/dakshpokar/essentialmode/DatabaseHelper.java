@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TABLE_NAME = "apps_list";
+    private static final String TABLE_NAME = "applist";
     private static final String COL1 = "ID";
     private static final String COL2 = "ApplicationName";
 
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2 + " TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY, " + COL2 + " TEXT)";
         sqLiteDatabase.execSQL(createTable);
     }
 
@@ -31,7 +31,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
+    public void getCount(){
 
+    }
     public boolean addData(Integer id, String title)
     {
         SQLiteDatabase db = this.getWritableDatabase();

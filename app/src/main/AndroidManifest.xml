@@ -27,6 +27,8 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
     </application>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 </manifest>
