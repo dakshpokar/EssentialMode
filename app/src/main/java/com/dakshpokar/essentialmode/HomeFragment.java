@@ -1,5 +1,6 @@
 package com.dakshpokar.essentialmode;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -150,23 +151,29 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 final String pkg_name = appItem.getPackageName();
-                    app.setImageDrawable(appItem.getIcon(getContext()));
-                    ColorMatrix matrix = new ColorMatrix();
-                    matrix.setSaturation(0);
-                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    app.setColorFilter(filter);
-                    app.setOnClickListener(new View.OnClickListener() {
-                        Integer count = 0;
+                    if(data.getInt(0) < 5) {
+                        app.setImageDrawable(appItem.getIcon(getContext()));
+                        ColorMatrix matrix = new ColorMatrix();
+                        matrix.setSaturation(0);
+                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                        app.setColorFilter(filter);
+                        app.setOnClickListener(new View.OnClickListener() {
+                            Integer count = 0;
 
-                        @Override
-                        public void onClick(View v) {
-                            Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(pkg_name);
-                            if (launchIntent != null) {
-                                startActivity(launchIntent);//null pointer check in case package name was not found
+                            @Override
+                            public void onClick(View v) {
+                                Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(pkg_name);
+                                Bundle optsBundle = null;
+                                ActivityOptions opts = null;
+                                int left = 0, top = 0;
+                                int width = v.getMeasuredWidth(), height = v.getMeasuredHeight();
+                                opts = ActivityOptions.makeClipRevealAnimation(v, left, top, width, height);
+                                optsBundle = opts != null ? opts.toBundle() : null;
+                                getContext().startActivity(launchIntent, optsBundle);
                             }
-                        }
-                    });
-                    app.setOnLongClickListener(longClickListener);
+                        });
+                        app.setOnLongClickListener(longClickListener);
+                    }
             } catch (PackageManager.NameNotFoundException e) {
 
             }
@@ -329,9 +336,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(pkg_name);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);//null pointer check in case package name was not found
-                }
+                Bundle optsBundle = null;
+                ActivityOptions opts = null;
+                int left = 0, top = 0;
+                int width = v.getMeasuredWidth(), height = v.getMeasuredHeight();
+                opts = ActivityOptions.makeClipRevealAnimation(v, left, top, width, height);
+                optsBundle = opts != null ? opts.toBundle() : null;
+                getContext().startActivity(launchIntent, optsBundle);
+
             }
         });
         invoker = 0;
