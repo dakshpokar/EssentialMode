@@ -1,6 +1,9 @@
 package com.dakshpokar.essentialmode;
 
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -12,6 +15,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -55,6 +59,8 @@ public class HomeFragment extends Fragment {
     public View view;
     private ImageButton app1, app2, app3, app4;
     View.OnLongClickListener longClickListener;
+    public static final int RESULT_ENABLE = 11;
+
     public HomeFragment() {
         pageIndicatorView.setVisibility(View.INVISIBLE);
 
@@ -79,7 +85,23 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
-
+    private void lock() {
+        PowerManager pm = (PowerManager)getContext().getSystemService(Context.POWER_SERVICE);
+        if (pm.isScreenOn()) {
+            DevicePolicyManager policy = (DevicePolicyManager)
+                    getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+            try {
+                policy.lockNow();
+            } catch (SecurityException ex) {
+                Toast.makeText(getActivity(), "Please enable Device Administrator", Toast.LENGTH_LONG).show();
+                ComponentName admin = new ComponentName(getContext(), AdminReceiver.class);
+                Intent intent = new Intent(
+                        DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).putExtra(
+                        DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
+                getContext().startActivity(intent);
+            }
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (getArguments() != null) {
@@ -189,7 +211,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        view.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    lock();
+                    return super.onDoubleTap(e);
+                }
+            });
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
         mDatabaseHelper = new DatabaseHelper(getActivity());
         //Setting icons on home screen
         app1 = (ImageButton)view.findViewById(R.id.app1);

@@ -6,4 +6,6 @@
     <string name="time">%1$s</string>
     <string name="icon_description">App Icon</string>
     <string name="appchooser_dialogtitle">Choose App</string>
+    <string name="device_admin">Essential Mode</string>
+    <string name="device_admin_description">An app to curb smartphone addiction.</string>
 </resources>

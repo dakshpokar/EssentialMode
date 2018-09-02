@@ -129,9 +129,7 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            hideSystemUI();
-        }
+        hideSystemUI();
     }
 
     private void hideSystemUI() {
@@ -220,4 +218,23 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
             txtView.setText(temp);
         }
     }
+
+    @Override
+    protected void onPause() {
+        hideSystemUI();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        hideSystemUI();
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        hideSystemUI();
+        super.onRestart();
+    }
+
 }
