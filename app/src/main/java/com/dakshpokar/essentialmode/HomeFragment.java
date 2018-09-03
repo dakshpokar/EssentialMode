@@ -60,6 +60,11 @@ public class HomeFragment extends Fragment {
     private ImageButton app1, app2, app3, app4;
     View.OnLongClickListener longClickListener;
     public static final int RESULT_ENABLE = 11;
+    DevicePolicyManager deviceManger;
+    ActivityManager activityManager;
+    ComponentName compName;
+    private static final long FINGERPRINT_UNLOCK_TIMEOUT_MS = 72 * 60 * 60 * 1000;
+
 
     public HomeFragment() {
         pageIndicatorView.setVisibility(View.INVISIBLE);
@@ -85,23 +90,7 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
-    private void lock() {
-        PowerManager pm = (PowerManager)getContext().getSystemService(Context.POWER_SERVICE);
-        if (pm.isScreenOn()) {
-            DevicePolicyManager policy = (DevicePolicyManager)
-                    getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
-            try {
-                policy.lockNow();
-            } catch (SecurityException ex) {
-                Toast.makeText(getActivity(), "Please enable Device Administrator", Toast.LENGTH_LONG).show();
-                ComponentName admin = new ComponentName(getContext(), AdminReceiver.class);
-                Intent intent = new Intent(
-                        DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).putExtra(
-                        DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
-                getContext().startActivity(intent);
-            }
-        }
-    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (getArguments() != null) {
@@ -211,11 +200,30 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        deviceManger = (DevicePolicyManager)getContext().getSystemService(
+                Context.DEVICE_POLICY_SERVICE);
+        activityManager = (ActivityManager)getContext().getSystemService(
+                Context.ACTIVITY_SERVICE);
+        compName = new ComponentName(getContext(), AdminReceiver.class);
+
+
         view.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    lock();
+                    boolean active = deviceManger.isAdminActive(compName);
+                    if(active){
+                        deviceManger.lockNow();
+                    }
+                    else {
+                        Intent intent = new Intent(DevicePolicyManager
+                                .ACTION_ADD_DEVICE_ADMIN);
+                        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                                compName);
+                        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                                "Additional text explaining why this needs to be added.");
+                        startActivityForResult(intent, RESULT_ENABLE);
+                    }
                     return super.onDoubleTap(e);
                 }
             });

@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.pureBlack));
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         SimpleDateFormat timeData = new SimpleDateFormat("h:mm a");
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
     }
 
     private void hideSystemUI() {
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.pureBlack));
+
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
         // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -228,12 +232,14 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
     @Override
     protected void onResume() {
         hideSystemUI();
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.pureBlack));
         super.onResume();
     }
 
     @Override
     protected void onRestart() {
         hideSystemUI();
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.pureBlack));
         super.onRestart();
     }
 
