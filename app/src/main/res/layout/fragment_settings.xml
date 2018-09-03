@@ -33,10 +33,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
                 <ImageButton
+                    android:id="@+id/wifi_setting"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:onClick="ToggleWifi"
+                    android:background="@drawable/circle"
+                    android:src="@drawable/ic_signal_wifi_off_24dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+                <ImageButton
+                    android:id="@+id/bluetooth_setting"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/circle"
-                    android:src="@drawable/ic_signal_wifi_4_bar_black_24dp"
+                    android:onClick="ToggleBluetooth"
+                    android:src="@drawable/ic_bluetooth_off_24dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:onClick="ToggleAutoRotate"
+                    android:background="@drawable/circle"
+                    android:src="@drawable/ic_screen_rotation_off_24dp"
                     />
             </LinearLayout>
             <LinearLayout
@@ -48,7 +77,8 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/circle"
-                    android:src="@drawable/ic_bluetooth_black_24dp"
+                    android:onClick="ToggleAirplane"
+                    android:src="@drawable/ic_airplanemode_off_black_24dp"
                     />
             </LinearLayout>
             <LinearLayout
@@ -60,31 +90,8 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/circle"
-                    android:src="@drawable/ic_screen_rotation_black_24dp"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/ic_airplanemode_active_black_24dp"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/ic_signal_cellular_4_bar_black_24dp"
+                    android:onClick="ToggleData"
+                    android:src="@drawable/ic_signal_cellular_off_black_24dp"
                     />
             </LinearLayout>
         </LinearLayout>

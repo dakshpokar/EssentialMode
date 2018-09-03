@@ -1,43 +1,31 @@
 package com.dakshpokar.essentialmode;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rd.PageIndicatorView;
 
-import junit.framework.Test;
-
 import java.text.SimpleDateFormat;
-import java.util.List;
-
-import static android.content.Intent.CATEGORY_LAUNCHER;
 
 public class MainActivity extends AppCompatActivity implements AppChooserListener, HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -242,5 +230,35 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.pureBlack));
         super.onRestart();
     }
+    public void ToggleWifi(View view){
+        WifiManager wifiManager = (WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.wifi_setting);
+        if(wifiManager.isWifiEnabled()){
+            wifiManager.setWifiEnabled(false);
+            imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_signal_wifi_off_24dp));
+        }
+        else{
+            wifiManager.setWifiEnabled(true);
+            imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_signal_wifi_on_24dp));
+        }
+    }
+    public void ToggleBluetooth(View view){
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        ImageButton imageButton = (ImageButton) findViewById(R.id.bluetooth_setting);
+        if(bluetoothAdapter.isEnabled()){
+            bluetoothAdapter.disable();
+            imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_off_24dp));
+        }
+        else{
+            bluetoothAdapter.enable();
+            imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_on_24dp));
+        }
+    }
+    public void ToggleAutoRotate(View view){
+        ImageButton imageButton = (ImageButton) findViewById(R.id.bluetooth_setting);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+
+    }
 }
