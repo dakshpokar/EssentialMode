@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
 
     public HomeFragment() {
-        pageIndicatorView.setVisibility(View.INVISIBLE);
+        //pageIndicatorView.setVisibility(View.INVISIBLE);
 
     }
 

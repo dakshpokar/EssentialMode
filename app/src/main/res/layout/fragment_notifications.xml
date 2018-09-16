@@ -18,10 +18,98 @@
             android:text="Notifications"
             android:textSize="30dp"
             android:textColor="@color/white"/>
+        <RelativeLayout
+            android:id="@+id/settings"
+            android:layout_below="@+id/notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+
+                android:layout_below="@+id/settings_title"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageButton
+                            android:id="@+id/wifi_setting"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:onClick="ToggleWifi"
+                            android:background="@drawable/circle"
+                            android:src="@drawable/ic_signal_wifi_off_24dp"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageButton
+                            android:id="@+id/bluetooth_setting"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/circle"
+                            android:onClick="ToggleBluetooth"
+                            android:src="@drawable/ic_bluetooth_off_24dp"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageButton
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:onClick="ToggleAutoRotate"
+                            android:background="@drawable/circle"
+                            android:src="@drawable/ic_screen_rotation_off_24dp"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageButton
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/circle"
+                            android:onClick="ToggleAirplane"
+                            android:src="@drawable/ic_airplanemode_off_black_24dp"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <ImageButton
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/circle"
+                            android:onClick="ToggleData"
+                            android:src="@drawable/ic_signal_cellular_off_black_24dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
         <ListView
             android:id="@+id/notification_list"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/notification_title"
+            android:layout_below="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"></ListView>
     </RelativeLayout>

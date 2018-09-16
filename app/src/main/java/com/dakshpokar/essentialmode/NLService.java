@@ -34,7 +34,7 @@ public class NLService extends NotificationListenerService {
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
         i.putExtra("notification_event","onNotificationPosted :" + sbn.getPackageName() + "\n");
-        MainActivity.notificationsFragment.addItem(sbn);
+        //MainActivity.notificationsFragment.addItem(sbn);
         sendBroadcast(i);
 
     }

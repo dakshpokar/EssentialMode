@@ -2,10 +2,12 @@ package com.dakshpokar.essentialmode;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -88,6 +91,29 @@ public class NotificationsFragment extends Fragment {
         ImageView notification_icon = (ImageView)view.findViewById(R.id.notification_icon);
         TextView notification_app_name = (TextView) view.findViewById(R.id.notification_app_name);
         TextView notification_description = (TextView) view.findViewById(R.id.upper_text);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(getContext().WIFI_SERVICE);
+                ImageButton imageButton = (ImageButton) view.findViewById(R.id.wifi_setting);
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                ImageButton bluetoothImage = (ImageButton) view.findViewById(R.id.bluetooth_setting);
+                while(true) {
+                    if (wifiManager.isWifiEnabled()) {
+                        imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_signal_wifi_on_24dp));
+                    } else {
+                        imageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_signal_wifi_off_24dp));
+                    }
+
+                    if (bluetoothAdapter.isEnabled()) {
+                        bluetoothImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_on_24dp));
+                    } else {
+                        bluetoothImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_bluetooth_off_24dp));
+                    }
+                }
+            }
+        });
+        thread.start();
         return view;
     }
 

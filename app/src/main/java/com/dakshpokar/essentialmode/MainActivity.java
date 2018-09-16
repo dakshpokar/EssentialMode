@@ -27,12 +27,11 @@ import com.rd.PageIndicatorView;
 
 import java.text.SimpleDateFormat;
 
-public class MainActivity extends AppCompatActivity implements AppChooserListener, HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AppChooserListener, HomeFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener{
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     static HomeFragment homeFragment;
-    static NotificationsFragment notificationsFragment;
-    static SettingsFragment settingsFragment;
+    static NotificationsFragment notSetFragment;
     static PageIndicatorView pageIndicatorView;
     private Integer invoker;
     DevicePolicyManager deviceManger;
@@ -58,14 +57,14 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        pageIndicatorView = (PageIndicatorView)findViewById(R.id.pageIndicatorView);
+        //pageIndicatorView = (PageIndicatorView)findViewById(R.id.pageIndicatorView);
+        //pageIndicatorView.setVisibility(View.INVISIBLE);
         mViewPager = (ViewPager) findViewById(R.id.fragment_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
         homeFragment = new HomeFragment();
-        settingsFragment = new SettingsFragment();
         //txtView = (TextView)findViewById(R.id.txtView);
-        notificationsFragment = new NotificationsFragment();
+        //notSetFragment = new NotificationsFragment();
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -76,17 +75,14 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
             @Override
             public void onPageSelected(int position) {
                 if(position == 0){
-                    pageIndicatorView.setVisibility(View.INVISIBLE);
+                    //pageIndicatorView.setVisibility(View.INVISIBLE);
                 }
-                else if(position == 1)
+                /*else if(position == 1)
                 {
-                    pageIndicatorView.setVisibility(View.VISIBLE);
-                }
-                else if(position == 2){
-                    pageIndicatorView.setVisibility(View.VISIBLE);
-                }
-                else{
                     pageIndicatorView.setVisibility(View.INVISIBLE);
+                }*/
+                else{
+                    //pageIndicatorView.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -183,22 +179,21 @@ public class MainActivity extends AppCompatActivity implements AppChooserListene
             if(position == 0){
                 return homeFragment;
             }
+            /*
             else if(position == 1){
-                return notificationsFragment;
+                return notSetFragment;
             }
-            else if(position == 2){
-                pageIndicatorView.setVisibility(View.INVISIBLE);
-                return settingsFragment;
-            }
+            */
             else{
                 return null;
             }
+
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 1;
         }
 
     }
